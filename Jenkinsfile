@@ -1,10 +1,7 @@
 pipeline {
     agent { docker { image 'maven:3.3.3' } }
     stages {
-        stage('build') {
-            steps {
-                sh 'mvn -f clean package checkstyle:checkstyle findbugs:findbugs cobertura:cobertura pmd:pmd -DskipDockerBuild=true'
-            }
+       
             stage('test'){
                 steps{
       ([$class: 'JUnitResultArchiver', testResults: '**/target/**/TEST-*.xml'])    
@@ -15,4 +12,8 @@ pipeline {
         }
         
     }
-}
+ stage('build') {
+            steps {
+                sh 'mvn -f clean package checkstyle:checkstyle findbugs:findbugs cobertura:cobertura pmd:pmd -DskipDockerBuild=true'
+            }
+ }
